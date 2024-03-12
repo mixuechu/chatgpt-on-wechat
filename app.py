@@ -18,7 +18,7 @@ def sigterm_handler_wrap(_signo):
     def func(_signo, _stack_frame):
         logger.info("signal {} received, exiting...".format(_signo))
         conf().save_user_datas()
-        if callable(old_handler):  #  check old_handler
+        if callable(old_handler):  # check old_handler
             return old_handler(_signo, _stack_frame)
         sys.exit(0)
 
@@ -43,6 +43,12 @@ def start_channel(channel_name: str):
 def run():
     try:
         # load config
+        os.environ["LLM_API_KEY"] = "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"  # 必填
+        os.environ["NEWS_API_KEY"] = "5124ceb8bdb549d9a2881237b7b28234"
+        os.environ["wolfram_alpha_appid"] = "6YAJJA-H338L6VPYE"
+        os.environ["google_api_key"] = "AIzaSyAOc07Ge6UKho_iX6bnL_qz2MOufRsov2E"
+        os.environ["google_cse_id"] = "ca-pub-9337588569428401"
+
         load_config()
         # ctrl + c
         sigterm_handler_wrap(signal.SIGINT)
