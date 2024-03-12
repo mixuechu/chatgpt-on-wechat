@@ -242,7 +242,7 @@ class LinkAI(Plugin):
         return help_text
 
     def _load_config_template(self):
-        logger.debug("No LinkAI plugin config.json, use plugins/linkai/config.json.template")
+        logger.debug("No LinkAI plugin config.json, use plugins/linkai/config.json")
         try:
             plugin_config_path = os.path.join(self.path, "config.json.template")
             if os.path.exists(plugin_config_path):
