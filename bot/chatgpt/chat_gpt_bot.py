@@ -5,7 +5,7 @@ import time
 import openai
 import openai.error
 import requests
-
+from plugins.internal_tools.essay_imitator import EssayCopier
 from bot.bot import Bot
 from bot.chatgpt.chat_gpt_session import ChatGPTSession
 from bot.openai.open_ai_image import OpenAIImage
@@ -42,6 +42,18 @@ class ChatGPTBot(Bot, OpenAIImage):
             "request_timeout": conf().get("request_timeout", None),  # 请求超时时间，openai接口默认设置为600，对于难问题一般需要较长时间
             "timeout": conf().get("request_timeout", None),  # 重试超时时间，在这个时间内，将会自动重试
         }
+
+    def imitate_docx(self, original_docx):
+        logger.debug("[Openai] original file name={}".format(original_docx))
+        try:
+            ec = EssayCopier(original_docx)
+            converted_file_name = ec.rewrite_docx()
+            reply = Reply(ReplyType.FILE, converted_file_name)
+            logger.info("[Openai] imitate file={} converted file name={}".format(original_docx, converted_file_name))
+        except Exception as e:
+            reply = Reply(ReplyType.ERROR, "我暂时无法完成转换，请稍后再试吧~")
+        finally:
+            return reply
 
     def reply(self, query, context=None):
         # acquire reply content

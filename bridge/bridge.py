@@ -71,6 +71,9 @@ class Bridge(object):
     def fetch_text_to_voice(self, text) -> Reply:
         return self.get_bot("text_to_voice").textToVoice(text)
 
+    def fetch_docx_to_converted(self, docx_file) -> Reply:
+        return self.get_bot("chat").imitate_docx(docx_file)
+
     def fetch_translate(self, text, from_lang="", to_lang="en") -> Reply:
         return self.get_bot("translate").translate(text, from_lang, to_lang)
 

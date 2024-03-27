@@ -45,9 +45,9 @@ def run():
         # load config
         os.environ["LLM_API_KEY"] = "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"  # 必填
         os.environ["NEWS_API_KEY"] = "5124ceb8bdb549d9a2881237b7b28234"
-        os.environ["wolfram_alpha_appid"] = "6YAJJA-H338L6VPYE"
-        os.environ["google_api_key"] = "AIzaSyAOc07Ge6UKho_iX6bnL_qz2MOufRsov2E"
-        os.environ["google_cse_id"] = "ca-pub-9337588569428401"
+        os.environ["WOLFRAM_ALPHA_APPID"] = "6YAJJA-H338L6VPYE"
+        os.environ["GOOGLE_API_KEY"] = "AIzaSyAOc07Ge6UKho_iX6bnL_qz2MOufRsov2E"
+        os.environ["GOOGLE_CSE_ID"] = "ca-pub-9337588569428401"
 
         load_config()
         # ctrl + c
