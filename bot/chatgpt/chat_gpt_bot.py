@@ -1,7 +1,7 @@
 # encoding:utf-8
 
 import time
-
+import random
 import openai
 import openai.error
 import requests
@@ -16,6 +16,7 @@ from common.log import logger
 from common.token_bucket import TokenBucket
 from config import conf, load_config
 
+from songs.temp_map import song_map
 
 # OpenAI对话模型API (可用)
 class ChatGPTBot(Bot, OpenAIImage):
@@ -113,6 +114,18 @@ class ChatGPTBot(Bot, OpenAIImage):
                 reply = Reply(ReplyType.IMAGE_URL, retstring)
             else:
                 reply = Reply(ReplyType.ERROR, retstring)
+            return reply
+        elif context.type == ContextType.SONG_GENERATION:
+            song_name = ""
+            for keyword in song_map:
+                if keyword in query:
+                    song_name = random.choice(song_map[keyword])
+                    song_name = "songs/" + song_name + ".mp3"
+
+            if not song_name:
+                reply = Reply(ReplyType.TEXT, "生产新歌爬虫还没写完，这个明天再试试")
+            else:
+                reply = Reply(ReplyType.FILE, song_name)
             return reply
         else:
             reply = Reply(ReplyType.ERROR, "Bot不支持处理{}类型的消息".format(context.type))

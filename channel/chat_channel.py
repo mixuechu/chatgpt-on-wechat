@@ -150,9 +150,13 @@ class ChatChannel(Channel):
                     return None
             content = content.strip()
             img_match_prefix = check_prefix(content, conf().get("image_create_prefix"))
+            song_match_prefix = check_prefix(content, conf().get("song_generation_prefix"))
             if img_match_prefix:
                 content = content.replace(img_match_prefix, "", 1)
                 context.type = ContextType.IMAGE_CREATE
+            elif song_match_prefix:
+                content = content.replace(song_match_prefix, "", 1)
+                context.type = ContextType.SONG_GENERATION
             else:
                 context.type = ContextType.TEXT
             context.content = content.strip()
@@ -191,6 +195,9 @@ class ChatChannel(Channel):
         if not e_context.is_pass():
             logger.debug("[WX] ready to handle context: type={}, content={}".format(context.type, context.content))
             if context.type == ContextType.TEXT or context.type == ContextType.IMAGE_CREATE:  # 文字和图片消息
+                context["channel"] = e_context["channel"]
+                reply = super().build_reply_content(context.content, context)
+            elif context.type == ContextType.SONG_GENERATION:  # 音乐生成模块，待完备
                 context["channel"] = e_context["channel"]
                 reply = super().build_reply_content(context.content, context)
             elif context.type == ContextType.VOICE:  # 语音消息
